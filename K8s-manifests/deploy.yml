@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: version-app 
+  namespace: default 
+spec:
+  selector:
+    matchLabels:
+      app: version-app
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: version-app
+    spec:
+      containers:
+      - name: version-app
+        image: raj159/version-app:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080

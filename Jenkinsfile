@@ -37,5 +37,28 @@ pipeline{
                 }
             }
         }
+        stage('Deploy to k8s') {
+            steps{
+                script{
+                    withKubeConfig(caCertificate: '', clusterName: 'mycluster', contextName: 'mycluster', credentialsId: 'kubeconfig', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://myk8scluster.com:443') {
+
+                    sh 'kubectl apply -f K8s-manifests/deploy.yml'
+                    sh 'kubectl apply -f K8s-manifests/svc.yml'
+                }
+            }
+        }
+        }
+        stage('getting LoadBalencer IP') {
+            steps{
+                script{
+                    withKubeConfig(caCertificate: '', clusterName: 'mycluster', contextName: 'mycluster', credentialsId: 'kubeconfig', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://myk8scluster.com:443') {
+
+                    sh 'kubectl get svc --namespace default -o wide'
+                    
+                }
+            }
+        }
 }
 }
+}
+
