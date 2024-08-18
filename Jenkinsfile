@@ -23,7 +23,8 @@ pipeline{
         }
         stage('Build Docker Image') {
             steps {
-                        dockerImage = docker.build imageName
+                        // dockerImage = docker.build imageName
+                        docker build -t ${imageName}:latest .
                     }
                 }
         stage('Push Docker Image') {
